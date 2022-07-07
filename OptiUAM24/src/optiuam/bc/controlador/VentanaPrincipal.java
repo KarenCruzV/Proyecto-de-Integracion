@@ -90,6 +90,12 @@ public class VentanaPrincipal implements Initializable {
     Image potenciaI;
     /**Icono del analizador de espectro*/
     Image espectroI;
+    /**Icono del multiplexor*/
+    Image multiplexorI;
+    /**Icono del demultiplexor*/
+    Image demultiplexorI;
+    /**Icono de la rejilla de Bragg (FBG)*/
+    Image fbgI;
     /**Fondo del panel de trabajo*/
     Image fondo;
     /**Permite visualizar el icono de la fibra*/
@@ -113,6 +119,15 @@ public class VentanaPrincipal implements Initializable {
     /**Permite visualizar el icono del analizador de espectro*/
     @FXML
     ImageView viewEspectro;
+    /**Permite visualizar el icono del multiplexor*/
+    @FXML
+    ImageView viewMux;
+    /**Permite visualizar el icono del demultiplexor*/
+    @FXML
+    ImageView viewDemux;
+    /**Permite visualizar el icono de la rejilla de Bragg (FBG)*/
+    @FXML
+    ImageView viewFBG;
     /**Boton para abrir la ventana de la fibra y crear una*/
     @FXML
     Button btnFibra;
@@ -134,6 +149,15 @@ public class VentanaPrincipal implements Initializable {
     /**Boton para abrir la ventana del analizador de espectro y crear uno*/
     @FXML
     Button btnEspectro;
+    /**Boton para abrir la ventana del multiplexor y crear uno*/
+    @FXML
+    Button btnMux;
+    /**Boton para abrir la ventana del demultiplexor y crear uno*/
+    @FXML
+    Button btnDemux;
+    /**Boton para abrir la ventana de la rejilla de Bragg (FBG) y crear una*/
+    @FXML
+    Button btnFBG;
     /**Panel para agregar objetos*/    
     @FXML
     public Pane Pane1;
@@ -237,6 +261,9 @@ public class VentanaPrincipal implements Initializable {
         espectroI=new Image("images/ico_espectro.png"); 
         empalmeI=new Image("images/ico_empalme.png"); 
         splitterI=new Image("images/ico_splitter.png"); 
+        multiplexorI=new Image("images/ico_mux.png"); 
+        demultiplexorI=new Image("images/ico_demux.png"); 
+        fbgI=new Image("images/ico_fbg.png"); 
         
         viewFibra.setImage(fibraI);
         viewFuente.setImage(fuenteI);
@@ -245,6 +272,9 @@ public class VentanaPrincipal implements Initializable {
         viewEspectro.setImage(espectroI);
         viewEmpalme.setImage(empalmeI);
         viewSplitter.setImage(splitterI);
+        viewMux.setImage(multiplexorI);
+        viewDemux.setImage(demultiplexorI);
+        viewFBG.setImage(fbgI);
         
         componentMenu.setCollapsible(false);
     }    
