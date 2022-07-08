@@ -12,6 +12,7 @@ import optiuam.bc.modelo.Componente;
 import optiuam.bc.modelo.Conector;
 import optiuam.bc.modelo.ElementoGrafico;
 import optiuam.bc.modelo.Empalme;
+import optiuam.bc.modelo.FBG;
 import optiuam.bc.modelo.Fibra;
 import optiuam.bc.modelo.Fuente;
 import optiuam.bc.modelo.MedidorEspectro;
@@ -237,6 +238,11 @@ public class ControladorGeneral {
                 else if(aux.contains("power")){
                     MedidorPotencia potencia= (MedidorPotencia) elementos.get(i);
                     pw.println(potencia.toString()+","+obtenerDibujo(aux1).getDibujo().getLayoutX()+
+                            ","+obtenerDibujo(aux1).getDibujo().getLayoutY());
+                }
+                else if(aux.contains("fbg")){
+                    FBG fbg= (FBG) elementos.get(i);
+                    pw.println(fbg.toString()+","+obtenerDibujo(aux1).getDibujo().getLayoutX()+
                             ","+obtenerDibujo(aux1).getDibujo().getLayoutY());
                 }
                 else{

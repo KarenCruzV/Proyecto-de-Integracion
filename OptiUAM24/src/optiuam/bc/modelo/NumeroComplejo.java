@@ -1,7 +1,6 @@
 
 package optiuam.bc.modelo;
 
-
 /**
  * Clase NumeroComplejo la cual contiene los atributos principales de un numero complejo
  * @author Daniel Hernandez
@@ -9,7 +8,6 @@ package optiuam.bc.modelo;
  * @author Arturo Borja
  * @author Karen Cruz
  */
-
 public class NumeroComplejo {
     
     /**Parte real del numero complejo*/

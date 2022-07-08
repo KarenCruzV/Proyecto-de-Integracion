@@ -49,6 +49,7 @@ import optiuam.bc.modelo.Componente;
 import optiuam.bc.modelo.Conector;
 import optiuam.bc.modelo.ElementoGrafico;
 import optiuam.bc.modelo.Empalme;
+import optiuam.bc.modelo.FBG;
 import optiuam.bc.modelo.Fibra;
 import optiuam.bc.modelo.Fuente;
 import optiuam.bc.modelo.MedidorEspectro;
@@ -74,6 +75,8 @@ public class VentanaPrincipal implements Initializable {
     static int idEspectro = 0;
     /**Identificador del analizador de espectro*/
     static int idPotencia = 0;
+    /**Identificador de la rejilla de Bragg (FBG)*/
+    static int idFBG = 0;
     /**Conexion (linea) entre componentes*/
     static Line linea;
     /**Icono de la fibra optica*/
@@ -560,6 +563,49 @@ public class VentanaPrincipal implements Initializable {
     }
     
     /**
+     * Metodo que crea una rejilla de Bragg (FBG)
+     */
+    @FXML
+    public void crearFBG(){
+        ButtonType aceptar = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                "\nFBG created!",
+                aceptar);
+        alert.setTitle("Succes");
+        alert.setHeaderText(null);
+        alert.showAndWait();
+        
+        FBG rejilla = new FBG();
+        rejilla.setNombre("fbg"); 
+        rejilla.setConectadoEntrada(false);
+        rejilla.setConectadoSalida(false);
+        rejilla.setIdFBG(idFBG);
+        idFBG++;
+        rejilla.setId(controlador.getContadorElemento());
+        controlador.getElementos().add(rejilla);
+        
+        Label dibujo= new Label();
+        dibujo.setGraphic(new ImageView(new Image("images/dibujo_fbg.png")));
+        dibujo.setText("fbg" + "_"+ rejilla.getIdFBG());
+        dibujo.setContentDisplay(ContentDisplay.TOP);
+
+        ElementoGrafico elem = new ElementoGrafico();
+        elem.setComponente(rejilla);
+        elem.setDibujo(dibujo);
+        elem.setId(controlador.getContadorElemento());
+        controlador.getDibujos().add(elem);
+        Pane1.getChildren().add(dibujo);
+        
+        eventosFBG(elem);
+
+        controlador.setContadorElemento(controlador.getContadorElemento()+1);
+        for(int h=0; h<controlador.getElementos().size(); h++){
+            System.out.print("\telemento: "+controlador.getElementos().get(h).toString());
+            System.out.println("\tdibujo: "+controlador.getDibujos().get(h).getDibujo().getText());
+        }
+    }
+    
+    /**
      * Metodo el cual le proporciona eventos al medidor de potencia o al  
      * analizador de espectro tales como movimiento, abrir ventana para 
      * realizar su funcion o mostrar un menu de acciones
@@ -622,6 +668,89 @@ public class VentanaPrincipal implements Initializable {
         });
             elem.getDibujo().setOnMouseExited((MouseEvent event) -> {
                 elem.getDibujo().setStyle("");
+        });
+    }
+    
+    /**
+     * Metodo el cual le proporciona eventos a la rejilla de Bragg  tales como movimiento, 
+     * abrir ventana para modificarlo o mostrar un menu de acciones
+     * @param elem Elemento grafico del empalme
+     */
+    public void eventosFBG(ElementoGrafico elem) {
+        elem.getDibujo().setOnMouseDragged((MouseEvent event) -> {
+            if(event.getButton()==MouseButton.PRIMARY){
+                double newX=event.getSceneX();
+                double newY=event.getSceneY();
+                int j=0;
+                for(int a=0; a<Pane1.getChildren().size();a++){
+                    if(Pane1.getChildren().get(a).toString().contains(elem.getDibujo().getText())){
+                        j=a;
+                        break;
+                    }
+                }
+                if( outSideParentBoundsX(elem.getDibujo().getLayoutBounds(), newX, newY) ) {    //return; 
+                }else{
+                    elem.getDibujo().setLayoutX(Pane1.getChildren().get(j).getLayoutX()+event.getX()+1);
+                }
+
+                if(outSideParentBoundsY(elem.getDibujo().getLayoutBounds(), newX, newY) ) {    //return; 
+                }else{
+                elem.getDibujo().setLayoutY(Pane1.getChildren().get(j).getLayoutY()+event.getY()+1);}
+                if(elem.getComponente().isConectadoSalida()==true){
+                    elem.getComponente().getLinea().setVisible(false);
+                    dibujarLinea(elem);
+                }
+                if(elem.getComponente().isConectadoEntrada()){
+                    ElementoGrafico aux;
+                    for(int it=0; it<controlador.getDibujos().size();it++){
+                        if(elem.getComponente().getElementoConectadoEntrada().equals(controlador.getDibujos().get(it).getDibujo().getText())){
+                            aux=controlador.getDibujos().get(it);
+                            aux.getComponente().getLinea().setVisible(false);
+                        }
+                    }
+                    dibujarLineaAtras(elem);
+                }
+            }
+        });
+        elem.getDibujo().setOnMouseEntered((MouseEvent event) -> {
+            elem.getDibujo().setStyle("-fx-border-color: darkblue;");
+            elem.getDibujo().setCursor(Cursor.OPEN_HAND);
+        });
+        elem.getDibujo().setOnMouseExited((MouseEvent event) -> {
+            elem.getDibujo().setStyle("");
+        });
+        elem.getDibujo().setOnMouseClicked((MouseEvent event) -> {
+            if(event.getButton()==MouseButton.PRIMARY){
+                System.out.println("FBG");
+                /*try{
+                    Stage stage1 = new Stage(StageStyle.UTILITY);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("VentanaEmpalme.fxml"));
+                    Parent root = loader.load();
+                    //Se crea una instancia del controlador del empalme.
+                    VentanaEmpalmeController empalmeController = (VentanaEmpalmeController) loader.getController();
+                    empalmeController.init(controlador,stage,Pane1,scroll);
+                    empalmeController.init2(elem,empalmeController);
+                    empalmeController.btnCrear.setVisible(false);
+                    empalmeController.btnDesconectar.setVisible(true);
+                    empalmeController.lblConectarA.setVisible(true);
+                    empalmeController.cboxConectarA.setVisible(true);
+                    empalmeController.btnModificar.setVisible(true);
+
+                    Scene scene = new Scene(root);
+                    Image ico = new Image("images/acercaDe.png");
+                    stage1.getIcons().add(ico);
+                    stage1.setTitle("OptiUAM BC - "+elem.getDibujo().getText().toUpperCase());
+                    stage1.initModality(Modality.APPLICATION_MODAL);
+                    stage1.setScene(scene);
+                    stage1.setResizable(false);
+                    stage1.showAndWait();
+                }
+                catch(IOException ex){
+                    Logger.getLogger(VentanaEmpalmeController.class.getName()).log(Level.SEVERE, null, ex);
+                }*/
+            }else if(event.getButton()==MouseButton.SECONDARY){
+                mostrarMenu(elem);
+            }
         });
     }
     
@@ -693,8 +822,10 @@ public class VentanaPrincipal implements Initializable {
     
     /**
      * Metodo el cual muestra un menu de acciones para eliminar o 
-     * ver propiedades del medidor de potencia o del analizador de espectro
-     * @param dibujo Elemento grafico del medidor de potencia o del analizador de espectro
+     * ver propiedades del medidor de potencia, del analizador de espectro o 
+     * de la rejilla de Bragg
+     * @param dibujo Elemento grafico del medidor de potencia, del analizador de espectro
+     * o de la rejilla de Bragg
      */
     public void mostrarMenu(ElementoGrafico dibujo){
         ContextMenu contextMenu = new ContextMenu();
@@ -737,6 +868,18 @@ public class VentanaPrincipal implements Initializable {
                         alert.setHeaderText(null);
                         alert.showAndWait();
                     }
+                    else if(dibujo.getDibujo().getText().contains("fbg")){ 
+                        FBG aux= (FBG)controlador.getElementos().get(elemento);
+                        controlador.getDibujos().remove(dibujo);
+                        controlador.getElementos().remove(aux); 
+                        ButtonType aceptar = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                                "\nRemoved FBG!",
+                                aceptar);
+                        alert.setTitle("Succes");
+                        alert.setHeaderText(null);
+                        alert.showAndWait();
+                    }
                     else{
                         MedidorEspectro aux= (MedidorEspectro)controlador.getElementos().get(elemento);
                         controlador.getDibujos().remove(dibujo);
@@ -769,6 +912,23 @@ public class VentanaPrincipal implements Initializable {
                                 "\n  Id: "+aux.getIdPotencia()+
                                 "\n  Input: "+aux.getElementoConectadoEntrada()/*+
                                 "\n  Output :"+aux.getElementoConectadoSalida()*/);
+                        //label.setStyle("-fx-background-color: lavender;");
+                        Scene scene = new Scene(label, 190, 80);
+                        s.setScene(scene);
+                        s.setResizable(false);
+                        s.showAndWait();
+                    }
+                    else if(dibujo.getDibujo().getText().contains("fbg")){ 
+                        Stage s = new Stage(StageStyle.DECORATED);
+                        Image ico = new Image("images/dibujo_fbg.png");
+                        s.getIcons().add(ico);
+                        s.setTitle("OptiUAM BC - Properties");
+                        s.initModality(Modality.APPLICATION_MODAL);
+                        FBG aux= (FBG)controlador.getElementos().get(elemento);
+                        Label label = new Label("  Name: "+aux.getNombre()+
+                                "\n  Id: "+aux.getIdFBG()+
+                                "\n  Input: "+aux.getElementoConectadoEntrada()+
+                                "\n  Output :"+aux.getElementoConectadoSalida());
                         //label.setStyle("-fx-background-color: lavender;");
                         Scene scene = new Scene(label, 190, 80);
                         s.setScene(scene);
@@ -1225,6 +1385,38 @@ public class VentanaPrincipal implements Initializable {
                         Pane1.getChildren().add(dibujo6);
                         eventosEspectro(dibujo6, elem6);
                         idEspectro=espectro.getIdEspectro()+1;
+                        break;
+                    
+                    case "fbg":
+                        FBG fbg = new FBG();
+                        fbg.setId(Integer.valueOf(partes[1]));
+                        fbg.setNombre(nombre);
+                        fbg.setConectadoEntrada(Boolean.valueOf(partes[2]));
+                        fbg.setElementoConectadoEntrada(partes[3]);
+                        fbg.setConectadoSalida(Boolean.valueOf(partes[4]));
+                        fbg.setElementoConectadoSalida(partes[5]);
+                        fbg.setIdFBG(Integer.valueOf(partes[6]));
+                        System.out.println(fbg.getIdFBG());
+                        con.getElementos().add(fbg);
+                        
+                        Label dibujo7 = new Label();
+                        dibujo7.setGraphic(new ImageView(new Image("images/dibujo_fbg.png")));
+                        dibujo7.setText(fbg.getNombre() + "_"+ fbg.getIdFBG());
+                        dibujo7.setLayoutX(Double.parseDouble(partes[7]));
+                        dibujo7.setLayoutY(Double.parseDouble(partes[8]));
+                        dibujo7.setContentDisplay(ContentDisplay.TOP);
+                        
+                        ElementoGrafico elem7 = new ElementoGrafico();
+                        elem7.setComponente(fbg);
+                        elem7.setDibujo(dibujo7);
+                        elem7.setId(Integer.valueOf(partes[1]));
+                        con.getDibujos().add(elem7);
+                        dibujo7.setVisible(true);
+                        /*EDITAR COMO EN EL RESTO DE ELEMENTOS (MENOS MEDIDORES)*/
+                        Pane1.getChildren().add(dibujo7);
+                        eventosEspectro(dibujo7, elem7);
+                        idFBG=fbg.getIdFBG()+1;
+                        /*------------------------------------------------------*/
                         break;
                         
                     default:
