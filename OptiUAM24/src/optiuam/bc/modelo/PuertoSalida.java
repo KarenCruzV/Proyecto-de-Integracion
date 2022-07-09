@@ -9,7 +9,6 @@ import javafx.scene.shape.Line;
  * @author Arturo Borja
  * @author Karen Cruz
  */
-
 public class PuertoSalida {
     
     /**Indica si el componente esta conectado por la salida*/
@@ -23,7 +22,6 @@ public class PuertoSalida {
     public PuertoSalida() {
         this.conectadoSalida=false;
         this.elementoConectadoSalida="";
-        
     }
     
     /**

@@ -341,6 +341,7 @@ public class VentanaPrincipal implements Initializable {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
     /**
      * Metodo que abre la ventana para crear un divisor optico
      */
@@ -414,6 +415,35 @@ public class VentanaPrincipal implements Initializable {
             Image ico = new Image("images/acercaDe.png");
             s.getIcons().add(ico);
             s.setTitle("OptiUAM BC - New Splice");
+            s.initModality(Modality.APPLICATION_MODAL);
+            s.setScene(scene);
+            s.setResizable(false);
+            s.showAndWait();
+            //System.out.print(controlador.getContadorElemento());
+            for(int h=0; h<controlador.getElementos().size(); h++){
+                System.out.print("\telemento: "+controlador.getElementos().get(h).toString());
+                System.out.println("\tdibujo: "+controlador.getDibujos().get(h).getDibujo().getText());
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Metodo que abre la ventana para crear un multiplexor
+     */
+    @FXML
+    public void abrirVentanaMux() {
+        try {
+            Stage s = new Stage(StageStyle.UTILITY);
+            FXMLLoader loader= new FXMLLoader(getClass().getResource("VentanaMultiplexor.fxml"));
+            Parent root =loader.load();
+            VentanaMultiplexorController muxControl=loader.getController();
+            muxControl.init(controlador,VentanaPrincipal.stage,Pane1,this.scroll);
+            Scene scene = new Scene(root);
+            Image ico = new Image("images/acercaDe.png");
+            s.getIcons().add(ico);
+            s.setTitle("OptiUAM BC - New Multiplexer");
             s.initModality(Modality.APPLICATION_MODAL);
             s.setScene(scene);
             s.setResizable(false);
@@ -721,33 +751,23 @@ public class VentanaPrincipal implements Initializable {
         });
         elem.getDibujo().setOnMouseClicked((MouseEvent event) -> {
             if(event.getButton()==MouseButton.PRIMARY){
-                System.out.println("FBG");
-                /*try{
-                    Stage stage1 = new Stage(StageStyle.UTILITY);
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("VentanaEmpalme.fxml"));
-                    Parent root = loader.load();
-                    //Se crea una instancia del controlador del empalme.
-                    VentanaEmpalmeController empalmeController = (VentanaEmpalmeController) loader.getController();
-                    empalmeController.init(controlador,stage,Pane1,scroll);
-                    empalmeController.init2(elem,empalmeController);
-                    empalmeController.btnCrear.setVisible(false);
-                    empalmeController.btnDesconectar.setVisible(true);
-                    empalmeController.lblConectarA.setVisible(true);
-                    empalmeController.cboxConectarA.setVisible(true);
-                    empalmeController.btnModificar.setVisible(true);
-
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("VentanaFBG.fxml"));
+                    Parent root= loader.load();
+                    VentanaFBGController fbgControl = loader.getController();
+                    fbgControl.init(controlador, stage, Pane1, scroll, elem);
                     Scene scene = new Scene(root);
                     Image ico = new Image("images/acercaDe.png");
-                    stage1.getIcons().add(ico);
-                    stage1.setTitle("OptiUAM BC - "+elem.getDibujo().getText().toUpperCase());
-                    stage1.initModality(Modality.APPLICATION_MODAL);
-                    stage1.setScene(scene);
-                    stage1.setResizable(false);
-                    stage1.showAndWait();
+                    Stage s = new Stage(StageStyle.UTILITY);
+                    s.getIcons().add(ico);
+                    s.setTitle("OptiUAM BC - "+elem.getDibujo().getText().toUpperCase());
+                    s.setScene(scene);
+                    s.initModality(Modality.APPLICATION_MODAL);
+                    s.showAndWait();
+                    s.setResizable(false);
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                catch(IOException ex){
-                    Logger.getLogger(VentanaEmpalmeController.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
             }else if(event.getButton()==MouseButton.SECONDARY){
                 mostrarMenu(elem);
             }
@@ -1412,9 +1432,9 @@ public class VentanaPrincipal implements Initializable {
                         elem7.setId(Integer.valueOf(partes[1]));
                         con.getDibujos().add(elem7);
                         dibujo7.setVisible(true);
-                        /*EDITAR COMO EN EL RESTO DE ELEMENTOS (MENOS MEDIDORES)*/
+                        
                         Pane1.getChildren().add(dibujo7);
-                        eventosEspectro(dibujo7, elem7);
+                        eventosFBG(elem7);
                         idFBG=fbg.getIdFBG()+1;
                         /*------------------------------------------------------*/
                         break;

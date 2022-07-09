@@ -171,6 +171,8 @@ public class ControladorGeneral {
         VentanaSplitterController.idS=0;
         VentanaPrincipal.idEspectro=0;
         VentanaPrincipal.idPotencia=0;
+        VentanaPrincipal.idFBG=0;
+        VentanaMultiplexorController.idMux=0;
     }
     
     /**
