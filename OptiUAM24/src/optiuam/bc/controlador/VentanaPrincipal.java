@@ -459,6 +459,35 @@ public class VentanaPrincipal implements Initializable {
     }
     
     /**
+     * Metodo que abre la ventana para crear un demultiplexor
+     */
+    @FXML
+    public void abrirVentanaDemux() {
+        try {
+            Stage s = new Stage(StageStyle.UTILITY);
+            FXMLLoader loader= new FXMLLoader(getClass().getResource("VentanaDemultiplexor.fxml"));
+            Parent root =loader.load();
+            VentanaDemultiplexorController demuxControl=loader.getController();
+            demuxControl.init(controlador,VentanaPrincipal.stage,Pane1,this.scroll);
+            Scene scene = new Scene(root);
+            Image ico = new Image("images/acercaDe.png");
+            s.getIcons().add(ico);
+            s.setTitle("OptiUAM BC - New Demultiplexer");
+            s.initModality(Modality.APPLICATION_MODAL);
+            s.setScene(scene);
+            s.setResizable(false);
+            s.showAndWait();
+            //System.out.print(controlador.getContadorElemento());
+            for(int h=0; h<controlador.getElementos().size(); h++){
+                System.out.print("\telemento: "+controlador.getElementos().get(h).toString());
+                System.out.println("\tdibujo: "+controlador.getDibujos().get(h).getDibujo().getText());
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
      * Metodo que crea un medidor de potencia
      */
     @FXML

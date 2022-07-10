@@ -39,68 +39,67 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import optiuam.bc.modelo.Componente;
+import optiuam.bc.modelo.Demultiplexor;
 import optiuam.bc.modelo.ElementoGrafico;
-import optiuam.bc.modelo.Multiplexor;
 
 /**
- * Clase VentanMultiplexorController la cual se encarga de instanciar un 
- * multiplexor
+ * Clase VentanDemultiplexorController la cual se encarga de instanciar un 
+ * demultiplexor
  * @author Arturo Borja
  * @see ControladorGeneral
  */
-public class VentanaMultiplexorController extends ControladorGeneral implements Initializable {
+public class VentanaDemultiplexorController extends ControladorGeneral implements Initializable {
     
-    /**Identificador del multiplexor*/
-    static int idMux = 0;
+    /**Identificador del demultiplexor*/
+    static int idDemux = 0;
     /**Controlador del simulador*/
     ControladorGeneral controlador;
     /**Escenario en el cual se agregaran los objetos creados*/
     Stage stage;
-    /**Elemento grafico del multiplexor*/
+    /**Elemento grafico del demultiplexor*/
     ElementoGrafico elemG;
-    /**Controlador del multiplexor*/
-    VentanaMultiplexorController multiplexorControl;
-    /**Posicion del multiplexor en el eje X*/
+    /**Controlador del demultiplexor*/
+    VentanaDemultiplexorController demultiplexorControl;
+    /**Posicion del demultiplexor en el eje X*/
     static double posX;
-    /**Posicion del multiplexor en el eje Y*/
+    /**Posicion del demultiplexor en el eje Y*/
     static double posY;
     
-    /**RadioButton para la longitud de onda de nose1 nm*/
+    /**RadioButton para la longitud de onda de no se 1*/
     @FXML
     RadioButton rbtnNose1;
-    /**RadioButton para la longitud de onda de nose2 nm*/
+    /**RadioButton para la longitud de onda de no se 2*/
     @FXML
     RadioButton rbtnNose2;
-    /**Lista desplegable del numero de entradas que tiene el multiplexor*/
+    /**Lista desplegable del numero de salidas que tiene el demultiplexor*/
     @FXML
-    ComboBox cboxNumeroEntradas;
-    /**Lista desplegable de cada entrada que tiene el multiplexor*/
+    ComboBox cboxNumeroSalidas;
+    /**Lista desplegable de cada salida que tiene el demultiplexor*/
     @FXML
-    ComboBox cboxEntradas;
-    /**Lista desplegable de elementos disponibles para conectar el 
-     * multiplexor*/
+    ComboBox cboxSalidas;
+    /**Lista desplegable de elementos disponibles para conectar el demultiplexor*/
     @FXML
     ComboBox cboxConectarA;
-    /**Boton para desconectar el multiplexor*/
+    /**Boton para desconectar el demultiplexor*/
     @FXML
     Button btnDesconectar;
-    /**Boton para crear un multiplexor*/
+    /**Boton para crear un demultiplexor*/
     @FXML
     Button btnCrear;
-    /**Boton para modificar el multiplexor*/
+    /**Boton para modificar el demultiplexor*/
     @FXML
     Button btnModificar;
-    /**Caja de texto para ingresar la perdida de insercion del multiplexor*/
+    /**Caja de texto para ingresar la perdida de insercion del demultiplexor*/
     @FXML
     TextField txtPerdidaInsercion;
-    /**Etiqueta de la lista desplegable de cada entrada del multiplexor*/
+    /**Etiqueta de la lista desplegable de cada salida del demultiplexor*/
     @FXML
-    Label lblEntrada;
+    Label lblSalida;
     /**Etiqueta de la lista desplegable de elementos disponibles para conectar 
-     * el multiplexor*/
+     * el demultiplexor*/
     @FXML
     Label lblConectarA;
-    /**Separador de la ventana del multiplexor*/
+    /**Separador de la ventana del demultiplexor*/
     @FXML
     Separator separator;
     /**Panel para agregar objetos*/
@@ -111,23 +110,23 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
     private ScrollPane scroll;
 
     /**
-     * Metodo que muestra el identificador del multiplexor
-     * @return idMux
+     * Metodo que muestra el identificador del demultiplexor
+     * @return idDemux
      */
-    public static int getIdMux() {
-        return idMux;
+    public static int getIdDemux() {
+        return idDemux;
     }
 
     /**
-     * Metodo que modifica el identificador del multiplexor
-     * @param idMux Identificador del multiplexor
+     * Metodo que modifica el identificador del demultiplexor
+     * @param idDemux Identificador del demultiplexor
      */
-    public static void setIdMux(int idMux) {
-        VentanaMultiplexorController.idMux = idMux;
+    public static void setIdDemux(int idDemux) {
+        VentanaDemultiplexorController.idDemux = idDemux;
     }
-    
+
     /**
-     * Metodo que muestra la posicion del multiplexor en el eje X
+     * Metodo que muestra la posicion del demultiplexor en el eje X
      * @return posX
      */
     public static double getPosX() {
@@ -135,15 +134,15 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
     }
 
     /**
-     * Metodo que modifica la posicion del multiplexor en el eje X
+     * Metodo que modifica la posicion del demultiplexor en el eje X
      * @param posX Posicion en el eje X
      */
     public static void setPosX(double posX) {
-        VentanaMultiplexorController.posX = posX;
+        VentanaDemultiplexorController.posX = posX;
     }
 
     /**
-     * Metodo que muestra la posicion del multiplexor en el eje Y
+     * Metodo que muestra la posicion del demultiplexor en el eje Y
      * @return posY
      */
     public static double getPosY() {
@@ -151,15 +150,15 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
     }
 
     /**
-     * Metodo que modifica la posicion del multiplexor en el eje Y
+     * Metodo que modifica la posicion del demultiplexor en el eje Y
      * @param posY Posicion en el eje Y
      */
     public static void setPosY(double posY) {
-        VentanaMultiplexorController.posY = posY;
+        VentanaDemultiplexorController.posY = posY;
     }
     
     /**
-     * Metodo el cual inicializa la ventana del multiplexor
+     * Metodo el cual inicializa la ventana del demultiplexor
      * @param url La ubicacion utilizada para resolver rutas relativas para 
      * el objeto raiz, o nula si no se conoce la ubicacion
      * @param rb Los recursos utilizados para localizar el objeto raiz, o nulo 
@@ -167,9 +166,9 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cboxNumeroEntradas.getItems().removeAll(cboxNumeroEntradas.getItems());
-        cboxNumeroEntradas.getItems().addAll("2", "4", "8", "16", "32", "64");
-        cboxNumeroEntradas.getSelectionModel().select("2");
+        cboxNumeroSalidas.getItems().removeAll(cboxNumeroSalidas.getItems());
+        cboxNumeroSalidas.getItems().addAll("2", "4", "8", "16", "32", "64");
+        cboxNumeroSalidas.getSelectionModel().select("2");
         Tooltip perdidaI = new Tooltip();
         perdidaI.setText("2: The loss must be min: no se  max: no se"
                 + "\n4: The loss must be min: no se  max: no se"
@@ -183,21 +182,35 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
         btnDesconectar.setVisible(false);
         lblConectarA.setVisible(false);
         cboxConectarA.setVisible(false);
-        lblEntrada.setVisible(false);
-        cboxEntradas.setVisible(false);
+        lblSalida.setVisible(false);
+        cboxSalidas.setVisible(false);
         btnModificar.setVisible(false);
-    }    
+    }   
     
     /**
-     * Metodo el cual captura los datos obtenidos de la ventana del multiplexor 
-     * optico y crea uno
+     * Metodo que proporciona lo necesario para que la ventana reconozca a 
+     * que elemento se refiere
+     * @param controlador Controlador del simulador
+     * @param stage Escenario en el cual se agregan los objetos creados
+     * @param Pane1 Panel para agregar objetos
+     * @param scroll Espacio en el cual el usuario puede desplazarse
+     */
+    public void init(ControladorGeneral controlador, Stage stage, Pane Pane1, ScrollPane scroll) {
+        this.controlador=controlador;
+        this.stage=stage;
+        this.Pane1=Pane1;
+        this.scroll=scroll;
+    }
+    
+    /**
+     * Metodo el cual captura los datos obtenidos de la ventana del demultiplexor 
+     * y crea uno
      * @param event Representa cualquier tipo de accion 
      * @throws java.lang.reflect.InvocationTargetException Proporciona diferentes 
-     * excepciones lanzadas 
-     * bajo el paquete java lang
+     * excepciones lanzadas bajo el paquete java lang
      */
     public void enviarDatos(ActionEvent event) throws RuntimeException, InvocationTargetException, NumberFormatException{
-        int entradas=0, longitudOnda=0, id=0;
+        int salidas=0, longitudOnda=0, id=0;
         double perdida;
         
         if(rbtnNose1.isSelected()){
@@ -208,28 +221,28 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
             longitudOnda = 1111;
             rbtnNose2.setSelected(true);
         }
-        if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("2")){
-            entradas = 2;
+        if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("2")){
+            salidas = 2;
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("4")){
-            entradas = 4;
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("4")){
+            salidas = 4;
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("8")){
-            entradas = 8;
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("8")){
+            salidas = 8;
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("16")){
-            entradas = 16;
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("16")){
+            salidas = 16;
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("32")){
-            entradas = 32;
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("32")){
+            salidas = 32;
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("64")){
-            entradas = 64;
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("64")){
+            salidas = 64;
         }
         
-        cboxEntradas.getItems().removeAll(cboxEntradas.getItems());
-        for(int i = 0; i<entradas;i++){
-            cboxEntradas.getItems().addAll(String.valueOf(i+1));
+        cboxSalidas.getItems().removeAll(cboxSalidas.getItems());
+        for(int i = 0; i<salidas;i++){
+            cboxSalidas.getItems().addAll(String.valueOf(i+1));
         }
         if (txtPerdidaInsercion.getText().isEmpty() || txtPerdidaInsercion.getText().compareTo("")==0 || !txtPerdidaInsercion.getText().matches("[0-9]*?\\d*(\\.\\d+)?")){
             System.out.println("\nInvalid loss value");
@@ -245,54 +258,54 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
         else{
             perdida = Double.parseDouble(txtPerdidaInsercion.getText());
             txtPerdidaInsercion.setText(String.valueOf(perdida));
-            Multiplexor mux = new Multiplexor();
-            mux.setConectadoEntrada(false);
-            mux.setConectadoSalida(false);
-            //s.setPerdidaInsercion(perdida);
-            //s.setEntradas(entradas);
-            //s.setLongitudOnda(longitudOnda);
-            mux.setNombre("multiplexer");
-            mux.setIdMux(idMux);
-            //s.modificarEntradas(entradas);
-            idMux++;
-            guardarMultiplexor(mux);
+            Demultiplexor demux= new Demultiplexor();
+            demux.setConectadoEntrada(false);
+            demux.setConectadoSalida(false);
+            //demux.setPerdidaInsercion(perdida);
+            //demux.setSalidas(salidas);
+            //demux.setLongitudOnda(longitudOnda);
+            demux.setNombre("demultiplexer");
+            demux.setIdDemux(idDemux);
+            //demux.modificarSalidas(salidas);
+            idDemux++;
+            guardarDemux(demux);
             cerrarVentana(event);
         }
     }
     
     /**
-     * Metodo que guarda el multiplexor en el panel
-     * @param mux Multiplexor con valores almacenados
+     * Metodo que guarda el demultiplexor en el panel
+     * @param demux Demultiplexor con valores almacenados
      */
-    public void guardarMultiplexor(Multiplexor mux) {
-        mux.setId(controlador.getContadorElemento());
-        controlador.getElementos().add(mux);
+    public void guardarDemux(Demultiplexor demux) {
+        demux.setId(controlador.getContadorElemento());
+        controlador.getElementos().add(demux);
         Label dibujo= new Label();
         ElementoGrafico elem= new ElementoGrafico();
         
-        elem.setComponente(mux);
+        elem.setComponente(demux);
         elem.setId(controlador.getContadorElemento());
         
-        if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("2")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux2.png")));
+        if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("2")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux2.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("4")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux4.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("4")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux4.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("8")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux8.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("8")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux8.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("16")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux16.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("16")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux16.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("32")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux32.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("32")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux32.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("64")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux64.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("64")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux64.png")));
         }
         
-        dibujo.setText(mux.getNombre() + "_"+ mux.getIdMux());
+        dibujo.setText(demux.getNombre() + "_"+ demux.getIdDemux());
         dibujo.setContentDisplay(ContentDisplay.TOP);
         
         elem.setDibujo(dibujo);
@@ -303,7 +316,7 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
         
         ButtonType aceptar = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
         Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                "\nMultiplexer created!",
+                "\nDemultiplexer created!",
                 aceptar);
         alert.setTitle("Succes");
         alert.setHeaderText(null);
@@ -311,40 +324,40 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
     }
 
     /**
-     * Metodo que duplica un multiplexor
-     * @param mux Multiplexor a duplicar
-     * @param el Elemento grafico del divisor optico a duplicar
+     * Metodo que duplica un demultiplexor
+     * @param demux Demultiplexor a duplicar
+     * @param el Elemento grafico del demultiplexor a duplicar
      */
-    public void duplicarMultiplexor(Multiplexor mux, ElementoGrafico el) {
-        mux.setId(controlador.getContadorElemento());
-        mux.setNombre("multiplexer");
-        controlador.getElementos().add(mux);
+    public void duplicarDemux(Demultiplexor demux, ElementoGrafico el) {
+        demux.setId(controlador.getContadorElemento());
+        demux.setNombre("demultiplexer");
+        controlador.getElementos().add(demux);
         Label dibujo= new Label();
         ElementoGrafico elem= new ElementoGrafico();
         
-        elem.setComponente(mux);
+        elem.setComponente(demux);
         elem.setId(controlador.getContadorElemento());
         
-        if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("2")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux2.png")));
+        if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("2")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux2.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("4")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux4.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("4")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux4.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("8")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux8.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("8")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux8.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("16")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux16.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("16")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux16.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("32")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux32.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("32")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux32.png")));
         }
-        else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("64")){
-            dibujo.setGraphic(new ImageView(new Image("images/dibujo_mux64.png")));
+        else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("64")){
+            dibujo.setGraphic(new ImageView(new Image("images/dibujo_demux64.png")));
         }
         
-        dibujo.setText(mux.getNombre() + "_"+ mux.getIdMux());
+        dibujo.setText(demux.getNombre() + "_"+ demux.getIdDemux());
         dibujo.setContentDisplay(ContentDisplay.TOP);
             
         dibujo.setLayoutX(el.getDibujo().getLayoutX()+35);
@@ -366,9 +379,9 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
     }
     
     /**
-     * Metodo el cual le proporciona eventos al multiplexor tales como movimiento, 
+     * Metodo el cual le proporciona eventos al demultiplexor tales como movimiento, 
      * abrir ventana para modificarlo o mostrar un menu de acciones
-     * @param elem Elemento grafico del divisor optico
+     * @param elem Elemento grafico del demultiplexor
      */
     public void eventos(ElementoGrafico elem) {
         elem.getDibujo().setOnMouseDragged((MouseEvent event) -> {
@@ -417,27 +430,27 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
                 if(event.getButton()==MouseButton.PRIMARY){
                     try{
                         Stage stage1 = new Stage(StageStyle.UTILITY);
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("VentanaMultiplexor.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("VentanaDemultiplexor.fxml"));
                         Parent root = loader.load();
                         
-                        //Se crea una instancia del controlador del divisor optico
-                        VentanaMultiplexorController multiplexorController = (VentanaMultiplexorController) loader.getController();
-                        //multiplexorController.init(controlador, stage, Pane1, scroll);
+                        //Se crea una instancia del controlador del demux
+                        VentanaDemultiplexorController demuxController = (VentanaDemultiplexorController) loader.getController();
+                        demuxController.init(controlador, stage, Pane1, scroll);
                         //splitterController.init(controlador, this.stage, this.Pane1);
                         /*Se necesito usar otro init de forma que el controller sepa cual es el elemento
                             con el que se esta trabajando ademas de que se manda el mismo controller para 
                             iniciar con los valores del elemento mandado.
                         */
-                        //multiplexorController.init2(elem,multiplexorController);
-                        Multiplexor mult= (Multiplexor) elem.getComponente();
-                        multiplexorController.btnCrear.setVisible(false);
-                        multiplexorController.separator.setVisible(true);
-                        multiplexorController.lblEntrada.setVisible(true);
-                        multiplexorController.cboxEntradas.setVisible(true);
-                        multiplexorController.btnDesconectar.setVisible(true);
-                        multiplexorController.lblConectarA.setVisible(true);
-                        multiplexorController.cboxConectarA.setVisible(true);
-                        multiplexorController.btnModificar.setVisible(true);
+                        //demuxController.init2(elem,demuxController);
+                        Demultiplexor demult= (Demultiplexor) elem.getComponente();
+                        demuxController.btnCrear.setVisible(false);
+                        demuxController.separator.setVisible(true);
+                        demuxController.lblSalida.setVisible(true);
+                        demuxController.cboxSalidas.setVisible(true);
+                        demuxController.btnDesconectar.setVisible(true);
+                        demuxController.lblConectarA.setVisible(true);
+                        demuxController.cboxConectarA.setVisible(true);
+                        demuxController.btnModificar.setVisible(true);
                         
                         Scene scene = new Scene(root);
                         Image ico = new Image("images/acercaDe.png");
@@ -449,7 +462,7 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
                         stage1.showAndWait();
                     }
                     catch(IOException ex){
-                        Logger.getLogger(VentanaMultiplexorController.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(VentanaDemultiplexorController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
                 }else if(event.getButton()==MouseButton.SECONDARY){
@@ -460,8 +473,8 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
     
     /**
      * Metodo el cual muestra un menu de acciones para duplicar, eliminar o 
-     * ver propiedades del multiplexor
-     * @param dibujo Elemento grafico del multiplexor
+     * ver propiedades del demultiplexor
+     * @param dibujo Elemento grafico del demultiplexor
      */
     public void mostrarMenu(ElementoGrafico dibujo){
         ContextMenu contextMenu = new ContextMenu();
@@ -474,8 +487,8 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
             for(int elemento=0; elemento<controlador.getElementos().size(); elemento++){
                 if(dibujo.getId()==controlador.getElementos().get(elemento).getId()){
                     //System.out.println(dibujo.getId()+"----"+controlador.getElementos().get(elemento).getId());
-                    Multiplexor aux=new Multiplexor();
-                    Multiplexor aux1=(Multiplexor)controlador.getElementos().get(elemento);
+                    Demultiplexor aux=new Demultiplexor();
+                    Demultiplexor aux1=(Demultiplexor)controlador.getElementos().get(elemento);
                     aux.setConectadoEntrada(false);
                     aux.setConectadoSalida(false);
                     aux.setElementoConectadoEntrada("");
@@ -484,16 +497,16 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
                     aux.setNombre(aux1.getNombre());
                     //aux.setPerdidaInsercion(aux1.getPerdidaInsercion());
                     //aux.setSalidas(aux1.getSalidas());
-                    aux.setIdMux(idMux);
+                    aux.setIdDemux(idDemux);
                     //LinkedList conex= new LinkedList();
                     //for(int cz=0; cz<aux1.getSalidas();cz++){
                       //  PuertoSalida p=new PuertoSalida();
-                      //  aux.getConexiones().add(p);        
+                        //aux.getConexiones().add(p);        
                     //}
                     
-                    duplicarMultiplexor(aux,dibujo);
+                    duplicarDemux(aux,dibujo);
                     //System.out.println(aux);
-                    idMux++;
+                    idDemux++;
                     break;
                 }
             }
@@ -522,16 +535,16 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
                     }
                 }
             }
-            Multiplexor sp=(Multiplexor)dibujo.getComponente();
-            /*for(int cz=0; cz<sp.getConexiones().size(); cz++){
-                if(sp.getConexiones().get(cz).isConectadoSalida()){
+            Demultiplexor dm=(Demultiplexor)dibujo.getComponente();
+            /*for(int cz=0; cz<dm.getConexiones().size(); cz++){
+                if(dm.getConexiones().get(cz).isConectadoSalida()){
                     for(int elemento=0; elemento<controlador.getElementos().size(); elemento++){
-                        if(sp.getConexiones().get(cz).getElementoConectadoSalida().equals(controlador.getDibujos().get(elemento).getDibujo().getText())){
+                        if(dm.getConexiones().get(cz).getElementoConectadoSalida().equals(controlador.getDibujos().get(elemento).getDibujo().getText())){
                             Componente aux= controlador.getElementos().get(elemento);
                             //System.out.println();
                             aux.setConectadoEntrada(false);
                             aux.setElementoConectadoEntrada("-");
-                            sp.getConexiones().get(cz).getLinea().setVisible(false);
+                            dm.getConexiones().get(cz).getLinea().setVisible(false);
                         }
                     }
                 }
@@ -540,7 +553,7 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
             
             for(int elemento=0; elemento<controlador.getElementos().size(); elemento++){
                 if(dibujo.getId()==controlador.getElementos().get(elemento).getId()){
-                    Multiplexor aux= (Multiplexor)controlador.getElementos().get(elemento);
+                    Demultiplexor aux= (Demultiplexor)controlador.getElementos().get(elemento);
                     controlador.getDibujos().remove(dibujo);
                     controlador.getElementos().remove(aux); 
                 }
@@ -548,7 +561,7 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
             dibujo.getDibujo().setVisible(false);
             ButtonType aceptar = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
             Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                    "\nRemoved multiplexer!",
+                    "\nRemoved demultiplexer!",
                     aceptar);
             alert.setTitle("Succes");
             alert.setHeaderText(null);
@@ -561,14 +574,14 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
             for(int elemento=0; elemento<controlador.getElementos().size(); elemento++){
                 if(dibujo.getId()==controlador.getElementos().get(elemento).getId()){
                     Stage s = new Stage(StageStyle.DECORATED);
-                    Image ico = new Image("images/ico_mux.png");
+                    Image ico = new Image("images/ico_demux.png");
                     s.getIcons().add(ico);
                     s.setTitle("OptiUAM BC - Properties");
                     s.initModality(Modality.APPLICATION_MODAL);
-                    Multiplexor aux= (Multiplexor)controlador.getElementos().get(elemento);
+                    Demultiplexor aux= (Demultiplexor)controlador.getElementos().get(elemento);
                     Label label;
                     label = new Label("  Name: "+aux.getNombre()+
-                        "\n  Id: "+aux.getIdMux()+
+                        "\n  Id: "+aux.getIdDemux()+
                         "\n  Input: "+aux.getElementoConectadoEntrada()+
                         "\n  Output :"+aux.getElementoConectadoSalida()/*+
                         "\n  Wavelenght: "+aux.getLongitudOnda()+" nm"+
@@ -589,7 +602,7 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
     }
     
     /**
-     * Metodo para cerrar la ventana del divisor optico
+     * Metodo para cerrar la ventana del demultiplexor
      * @param event Representa cualquier tipo de accion
      */
     public void cerrarVentana(ActionEvent event){
@@ -599,15 +612,15 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
     }
     
     /**
-     * Metodo para modificar el divisor optico
+     * Metodo para modificar el demultiplexor
      * @param event Representa cualquier tipo de accion
      * @throws java.lang.reflect.InvocationTargetException Proporciona diferentes 
      * excepciones lanzadas bajo el paquete java lang
      */
     @FXML
     public void modificar(ActionEvent event) throws RuntimeException, InvocationTargetException, NumberFormatException{
-        Multiplexor aux = (Multiplexor) elemG.getComponente();
-        int entradas=0, longitudOnda=0, id=0;
+        Demultiplexor aux = (Demultiplexor) elemG.getComponente();
+        int salidas=0, longitudOnda=0, id=0;
         double perdida;
         
         if(rbtnNose1.isSelected()){
@@ -619,16 +632,16 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
             rbtnNose2.setSelected(true);
         }
         
-        if((multiplexorControl.cboxConectarA.getSelectionModel().getSelectedIndex())==0){
+        if((demultiplexorControl.cboxConectarA.getSelectionModel().getSelectedIndex())==0){
             //Desconectar(event);
         }
         else{
             //conectar();
         }
         
-        for(int i = 0; i<entradas;i++){
-            cboxEntradas.getItems().addAll(String.valueOf(i+1));
-            cboxEntradas.getSelectionModel().selectFirst();
+        for(int i = 0; i<salidas;i++){
+            cboxSalidas.getItems().addAll(String.valueOf(i+1));
+            cboxSalidas.getSelectionModel().selectFirst();
         }
         
         if (txtPerdidaInsercion.getText().isEmpty() || txtPerdidaInsercion.getText().compareTo("")==0 || !txtPerdidaInsercion.getText().matches("[0-9]*?\\d*(\\.\\d+)?")){
@@ -643,62 +656,47 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
             txtPerdidaInsercion.setText("");
         }
         else{
-            if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("2")){
-                entradas = 2;
-                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_mux2.png")));
+            if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("2")){
+                salidas = 2;
+                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_demux2.png")));
             }
-            else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("4")){
-                entradas = 4;
-                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_mux4.png")));
+            else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("4")){
+                salidas = 4;
+                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_demux4.png")));
             }
-            else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("8")){
-                entradas = 8;
-                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_mux8.png")));
+            else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("8")){
+                salidas = 8;
+                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_demux8.png")));
             }
-            else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("16")){
-                entradas = 16;
-                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_mux16.png")));
+            else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("16")){
+                salidas = 16;
+                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_demux16.png")));
             }
-            else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("32")){
-                entradas = 32;
-                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_mux32.png")));
+            else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("32")){
+                salidas = 32;
+                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_demux32.png")));
             }
-            else if(cboxNumeroEntradas.getSelectionModel().getSelectedItem().equals("64")){
-                entradas = 64;
-                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_mux64.png")));
+            else if(cboxNumeroSalidas.getSelectionModel().getSelectedItem().equals("64")){
+                salidas = 64;
+                elemG.getDibujo().setGraphic(new ImageView(new Image("images/dibujo_demux64.png")));
             }
             perdida = Double.parseDouble(txtPerdidaInsercion.getText());
             txtPerdidaInsercion.setText(String.valueOf(perdida));
             //aux.setPerdidaInsercion(perdida);
-            //aux.setSalidas(entradas);
+            //aux.setSalidas(salidas);
             //aux.setLongitudOnda(longitudOnda);
-            aux.setNombre("multiplexer");
+            aux.setNombre("demultiplexer");
             cerrarVentana(event);
 
             ButtonType aceptar = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
             Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                    "\nModified multiplexer!",
+                    "\nModified demultiplexer!",
                     aceptar);
             alert.setTitle("Succes");
             alert.setHeaderText(null);
             alert.showAndWait();
             
         }
-    }
-    
-    /**
-     * Metodo que proporciona lo necesario para que la ventana reconozca a 
-     * que elemento se refiere
-     * @param controlador Controlador del simulador
-     * @param stage Escenario en el cual se agregan los objetos creados
-     * @param Pane1 Panel para agregar objetos
-     * @param scroll Espacio en el cual el usuario puede desplazarse
-     */
-    public void init(ControladorGeneral controlador, Stage stage, Pane Pane1, ScrollPane scroll) {
-        this.controlador=controlador;
-        this.stage=stage;
-        this.Pane1=Pane1;
-        this.scroll=scroll;
     }
     
     /**

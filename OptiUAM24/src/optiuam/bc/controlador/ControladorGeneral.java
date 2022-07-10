@@ -8,8 +8,10 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jdk.nashorn.internal.runtime.Debug;
 import optiuam.bc.modelo.Componente;
 import optiuam.bc.modelo.Conector;
+import optiuam.bc.modelo.Demultiplexor;
 import optiuam.bc.modelo.ElementoGrafico;
 import optiuam.bc.modelo.Empalme;
 import optiuam.bc.modelo.FBG;
@@ -17,6 +19,7 @@ import optiuam.bc.modelo.Fibra;
 import optiuam.bc.modelo.Fuente;
 import optiuam.bc.modelo.MedidorEspectro;
 import optiuam.bc.modelo.MedidorPotencia;
+import optiuam.bc.modelo.Multiplexor;
 import optiuam.bc.modelo.Splitter;
 
 /**
@@ -173,6 +176,7 @@ public class ControladorGeneral {
         VentanaPrincipal.idPotencia=0;
         VentanaPrincipal.idFBG=0;
         VentanaMultiplexorController.idMux=0;
+        VentanaDemultiplexorController.idDemux=0;
     }
     
     /**
@@ -245,6 +249,16 @@ public class ControladorGeneral {
                 else if(aux.contains("fbg")){
                     FBG fbg= (FBG) elementos.get(i);
                     pw.println(fbg.toString()+","+obtenerDibujo(aux1).getDibujo().getLayoutX()+
+                            ","+obtenerDibujo(aux1).getDibujo().getLayoutY());
+                }
+                else if(aux.contains("multiplexer")){
+                    Multiplexor mux= (Multiplexor) elementos.get(i);
+                    pw.println(mux.toString()+","+obtenerDibujo(aux1).getDibujo().getLayoutX()+
+                            ","+obtenerDibujo(aux1).getDibujo().getLayoutY());
+                }
+                else if(aux.contains("demultiplexer")){
+                    Demultiplexor demux= (Demultiplexor) elementos.get(i);
+                    pw.println(demux.toString()+","+obtenerDibujo(aux1).getDibujo().getLayoutX()+
                             ","+obtenerDibujo(aux1).getDibujo().getLayoutY());
                 }
                 else{
