@@ -30,6 +30,7 @@ import javafx.stage.StageStyle;
 import optiuam.bc.modelo.Componente;
 import optiuam.bc.modelo.Conector;
 import optiuam.bc.modelo.ElementoGrafico;
+import optiuam.bc.modelo.Multiplexor;
 import optiuam.bc.modelo.Splitter;
 
 /**
@@ -708,6 +709,18 @@ public class VentanaConectorController extends ControladorGeneral implements Ini
                         if(!controlador.getElementos().get(elemento).isConectadoEntrada()){
 
                             conectorControl.cboxConectarA.getItems().add(controlador.getDibujos().get(elemento).getDibujo().getText());
+                        }
+                    }
+                    if("multiplexer".equals(controlador.getElementos().get(elemento).getNombre())){
+                        if(!controlador.getElementos().get(elemento).isConectadoEntrada()){
+                            conectorControl.cboxConectarA.getItems().add(controlador.getDibujos().get(elemento).getDibujo().getText()+"_input1");
+                        }
+                        Multiplexor mAux= (Multiplexor)controlador.getElementos().get(elemento);
+                        for(int m=0; m<mAux.getEntradas()-1;m++){
+                            if(!mAux.getConexionEntradas().get(m).isConectadoEntrada()){
+                                String puertodisponible="_input"+String.valueOf(m+2);
+                                conectorControl.cboxConectarA.getItems().add(controlador.getDibujos().get(elemento).getDibujo().getText()+puertodisponible);
+                            }
                         }
                     }
                 }
