@@ -15,7 +15,7 @@ public class PuertoEntrada {
     /**Nombre del componente el cual se encuentra conectado por la entrada*/
     private String elementoConectadoEntrada;
     /**Conexion (linea) del componente*/
-    private Line linea;
+    //private Line linea;
 
     /**Metodo constructor sin parametros*/
     public PuertoEntrada() {
@@ -55,22 +55,6 @@ public class PuertoEntrada {
      */
     public void setElementoConectadoEntrada(String elementoConectadoEntrada) {
         this.elementoConectadoEntrada = elementoConectadoEntrada;
-    }
-
-    /**
-     * Metodo que muestra la conexion (linea) del componente
-     * @return linea
-     */
-    public Line getLinea() {
-        return linea;
-    }
-
-    /**
-     * Metodo que modifica la conexion (linea) del componente
-     * @param linea Conexion (linea) del componente
-     */
-    public void setLinea(Line linea) {
-        this.linea = linea;
     }
     
     /**

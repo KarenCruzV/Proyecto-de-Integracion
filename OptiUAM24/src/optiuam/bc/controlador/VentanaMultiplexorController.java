@@ -248,14 +248,15 @@ public class VentanaMultiplexorController extends ControladorGeneral implements 
             Multiplexor mux = new Multiplexor();
             mux.setConectadoEntrada(false);
             mux.setConectadoSalida(false);
-            //s.setPerdidaInsercion(perdida);
-            //s.setEntradas(entradas);
-            //s.setLongitudOnda(longitudOnda);
+            mux.setPerdidaInsercion(perdida);
+            mux.setEntradas(entradas);
+            mux.setLongitudOnda(longitudOnda);
             mux.setNombre("multiplexer");
             mux.setIdMux(idMux);
-            //s.modificarEntradas(entradas);
+            mux.modificarEntradas(entradas);
             idMux++;
             guardarMultiplexor(mux);
+            System.out.println(mux.toString());
             cerrarVentana(event);
         }
     }
