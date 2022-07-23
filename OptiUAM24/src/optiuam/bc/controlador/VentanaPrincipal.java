@@ -785,6 +785,7 @@ public class VentanaPrincipal implements Initializable {
                     Parent root= loader.load();
                     VentanaFBGController fbgControl = loader.getController();
                     fbgControl.init(controlador, stage, Pane1, scroll, elem);
+                    fbgControl.init2(controlador, stage, Pane1,elem,fbgControl);
                     Scene scene = new Scene(root);
                     Image ico = new Image("images/acercaDe.png");
                     Stage s = new Stage(StageStyle.UTILITY);

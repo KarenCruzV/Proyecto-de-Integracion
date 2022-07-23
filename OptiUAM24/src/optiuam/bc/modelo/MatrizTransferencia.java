@@ -23,7 +23,17 @@ public class MatrizTransferencia {
         float lamda0 = (float) (1550*(Math.pow(10, -9)));
         float r=lamda0/4*refBragg;
         float l=lamda0/4*refSmf;
-               
+        float start = (float) (1567.*Math.pow(10, -9));
+        float end = (float) (1607.*Math.pow(10, -9));
+        int totalCount = 1000;
+        float[] lamda = linspace(start, end, totalCount);
+        for(int i = 0; i < totalCount ; i++){
+            float kc=(float) (2*Math.PI*refSmf/lamda[i]);
+            float kr=(float) (2*Math.PI*refBragg/lamda[i]);
+        }
+        int n = lamda.length;
+        
+        
         /*
         %Transmitividad y reflectividad en una fibra ptica con rejilla de ...
         Bragg usando el m t o d o de la matriz de transferencia
@@ -88,28 +98,15 @@ public class MatrizTransferencia {
     }
     
     /**
-     * Clase linspace (a,b,c) que genera un vector linealmente espaciado entre 
+     * Metodo linspace (a,b,c) que genera un vector linealmente espaciado entre 
      * los valores a y b con c elementos.
      */
-    public class linspace {
-        private float current;
-        private final float end;
-        private final float step;
-        
-        public linspace(float start, float end, float totalCount) {
-            this.current=start;
-            this.end=end;
-            this.step=(end - start) / totalCount;
-        }
-        
-        public boolean hasNext() {
-            return current < (end + step/2); //MAY stop floating point error
-        }
-        
-        public float getNextFloat() {
-            current+=step;
-            return current;
-        }
-    }
+    public static float[] linspace(float min, float max, int points) {  
+        float[] d = new float[points];  
+        for (int i = 0; i < points; i++){  
+            d[i] = min + i * (max - min) / (points - 1);  
+        }  
+        return d;  
+    }  
     
 }

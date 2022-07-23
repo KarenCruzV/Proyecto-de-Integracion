@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -33,6 +34,9 @@ public class VentanaFBGController extends ControladorGeneral implements Initiali
     /**Posicion de la rejilla de Bragg en el eje Y*/
     static double posY;
     
+    /***/
+    @FXML
+    ComboBox cboxConectarA;
     /**Panel para agregar objetos*/
     @FXML
     private Pane Pane1;
@@ -109,6 +113,38 @@ public class VentanaFBGController extends ControladorGeneral implements Initiali
         this.Pane1=Pane1;
         this.scroll=scroll;
         this.elemG=elem;
+    }
+    
+    /**
+     * Metodo que recibe el elemento y el controlador y, a partir de estos,
+     * puede mostrar los valores inciales del elemento 
+     * @param controlador Controlador del simulador
+     * @param stage Escenario en el cual se agregan los objetos creados
+     * @param Pane1 Panel para agregar objetos
+     * @param elem Elemento grafico
+     * @param fbgController Controlador de la rejilla de Bragg (FBG)
+    */
+    public void init2(ControladorGeneral controlador, Stage stage, Pane Pane1,ElementoGrafico elem, VentanaFBGController fbgController) {
+        this.elemG=elem;
+        this.controlador=controlador;
+        this.stage=stage;
+        this.Pane1=Pane1;
+        this.fbgControl=fbgController;
+        
+        if(elemG.getComponente().isConectadoSalida()==true){
+            fbgControl.cboxConectarA.getSelectionModel().select(elemG.getComponente().getElementoConectadoSalida());
+        }
+        else{
+            fbgControl.cboxConectarA.getItems().add("Desconected");
+            fbgControl.cboxConectarA.getSelectionModel().select(0);
+            for(int elemento=0; elemento<controlador.getElementos().size(); elemento++){
+                if("spectrum".equals(controlador.getElementos().get(elemento).getNombre())){
+                    if(!controlador.getElementos().get(elemento).isConectadoEntrada()){
+                        fbgControl.cboxConectarA.getItems().add(controlador.getDibujos().get(elemento).getDibujo().getText());
+                    }
+                }
+            }
+        }
     }
     
 }
